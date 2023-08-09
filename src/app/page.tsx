@@ -38,26 +38,40 @@ export default function Home() {
 		}
 	}
 
+	const resetTagFilters = () => {
+		setTagFilter([])
+	}
+
 	return (
 		<div className="w-full min-h-screen grid md:grid-cols-[200px_auto] p-4 md:p-6 gap-6">
-			<p className="text-2xl">Filtros</p>
-			<p className="text-2xl">
-				{filteredProducts.length} {filteredProducts.length === 1 ? 'resultado' : 'resultados'}
-			</p>
-			<div className="flex flex-col gap-4">
-				{Object.keys(categories).map((category) => (
-					<FilterTag
-						key={category}
-						category={category}
-						count={categories[category]}
-						onChange={handleSelectTag}
-					/>
-				))}
+			<div className="w-full flex flex-col gap-6">
+				<p className="text-2xl">Filtros</p>
+				<div className="flex flex-col gap-4 grid-col">
+					{Object.keys(categories).map((category) => (
+						<FilterTag
+							key={category}
+							category={category}
+							count={categories[category]}
+							onChange={handleSelectTag}
+						/>
+					))}
+				</div>
+				{tagFilter.length > 0 && (
+					<button onClick={resetTagFilters} className="w-max">
+						X Limpiar filtros
+					</button>
+				)}
 			</div>
-			<div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-x-10">
-				{filteredProducts.map((product) => (
-					<ProductPreview key={product.id} product={product} />
-				))}
+			<div className="w-full flex flex-col gap-6">
+				<p className="text-2xl">
+					{filteredProducts.length} {filteredProducts.length === 1 ? 'resultado' : 'resultados'}
+				</p>
+
+				<div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-x-10">
+					{filteredProducts.map((product) => (
+						<ProductPreview key={product.id} product={product} />
+					))}
+				</div>
 			</div>
 		</div>
 	)
