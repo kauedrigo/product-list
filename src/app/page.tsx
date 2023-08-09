@@ -5,6 +5,8 @@ import products from '../assets/products.json'
 export default function Home() {
 	const productList = products as ProductList
 
+	productList.data.nodes[0].category.name
+
 	return (
 		<div className="w-full min-h-screen md:grid md:grid-cols-[200px_auto] p-4 md:p-6">
 			<p>filter</p>
