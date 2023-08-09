@@ -60,6 +60,9 @@ export default function Home() {
 
 	return (
 		<div className="p-4 md:p-6 flex flex-col gap-6">
+			<h1 className="uppercase text-2xl font-bold text-blue-900">
+				¿Qué producto quieres encontrar?
+			</h1>
 			<SearchBar initialValue={searchFilter} setSearchValue={setSearchFilter} />
 			<div className="w-full min-h-screen grid md:grid-cols-[200px_auto] gap-6">
 				<div className="w-full flex flex-col gap-6">
