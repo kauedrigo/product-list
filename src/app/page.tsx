@@ -10,7 +10,6 @@ import { SearchBar } from '@/components/search-bar'
 
 export default function Home() {
 	const productList = products as ProductList
-	const categories = getProductListCategoriesWithCount(productList)
 
 	const [tagFilter, setTagFilter] = useState<string[]>([])
 	const [searchFilter, setSearchFilter] = useState('')
@@ -33,7 +32,9 @@ export default function Home() {
 		const filteredByName = filterByName(products)
 		const filteredByTag = filterByTag(filteredByName)
 
-		return filteredByTag
+		const categories = getProductListCategoriesWithCount(filteredByName)
+
+		return { products: filteredByTag, categories }
 	}, [tagFilter, productList, searchFilter])
 
 	const handleSelectTag = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,11 +69,11 @@ export default function Home() {
 				<div className="w-full flex flex-col gap-6">
 					<p className="text-2xl">Filtros</p>
 					<div className="flex flex-col gap-4 grid-col">
-						{Object.keys(categories).map((category) => (
+						{Object.keys(filteredProducts.categories).map((category) => (
 							<FilterTag
 								key={category}
 								category={category}
-								count={categories[category]}
+								count={filteredProducts.categories[category]}
 								onChange={handleSelectTag}
 							/>
 						))}
@@ -85,11 +86,12 @@ export default function Home() {
 				</div>
 				<div className="w-full flex flex-col gap-6">
 					<p className="text-2xl">
-						{filteredProducts.length} {filteredProducts.length === 1 ? 'resultado' : 'resultados'}
+						{filteredProducts.products.length}{' '}
+						{filteredProducts.products.length === 1 ? 'resultado' : 'resultados'}
 					</p>
 
 					<div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-x-10">
-						{filteredProducts.map((product) => (
+						{filteredProducts.products.map((product) => (
 							<ProductPreview key={product.id} product={product} />
 						))}
 					</div>
