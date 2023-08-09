@@ -30,10 +30,26 @@ export default function Home() {
 				: products
 		}
 
+		const removeTagFromFilter = (tag: string) => {
+			setTagFilter((prev) => {
+				const tagFilterCopy = [...prev]
+				const tagIndex = prev.findIndex((currentTag) => currentTag === tag)
+				tagFilterCopy.splice(tagIndex, 1)
+				return tagFilterCopy
+			})
+		}
+
 		const filteredByName = filterByName(products)
 		const filteredByTag = filterByTag(filteredByName)
 
 		const categories = getProductListCategoriesWithCount(filteredByName)
+		const categoryKeys = Object.keys(categories)
+
+		for (const tag of tagFilter) {
+			if (!categoryKeys.includes(tag)) {
+				removeTagFromFilter(tag)
+			}
+		}
 
 		return { products: filteredByTag, categories }
 	}, [tagFilter, productList, searchFilter])
@@ -43,7 +59,7 @@ export default function Home() {
 			<h1 className="uppercase text-2xl font-bold text-blue-900">
 				¿Qué producto quieres encontrar?
 			</h1>
-			<SearchBar initialValue={searchFilter} setSearchValue={setSearchFilter} />
+			<SearchBar searchValue={searchFilter} setSearchValue={setSearchFilter} />
 			<div className="w-full min-h-screen grid md:grid-cols-[200px_auto] gap-6">
 				<FilterTagContainer
 					categories={filteredProducts.categories}
