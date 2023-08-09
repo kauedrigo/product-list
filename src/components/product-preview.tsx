@@ -12,7 +12,7 @@ export const ProductPreview = ({ product }: ProductPreviewProps) => {
 	return (
 		<div className="flex flex-col gap-2 items-center">
 			<Image src={image.asset.url} alt={image.alt} width={200} height={200} />
-			<div className="flex flex-col">
+			<div className="flex flex-col gap-1">
 				<p className="text-center font-semibold">{product.name}</p>
 				<p className="text-center font-semibold">{product.shortDescription}</p>
 			</div>
