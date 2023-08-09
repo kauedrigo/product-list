@@ -19,7 +19,9 @@ export default function Home() {
 		const products = productList.data.nodes
 
 		const filterByName = (products: Product[]) => {
-			return products.filter((product) => product.name.includes(searchFilter))
+			return products.filter((product) =>
+				product.name.toLowerCase().includes(searchFilter.toLowerCase()),
+			)
 		}
 
 		const filterByTag = (products: Product[]) => {
