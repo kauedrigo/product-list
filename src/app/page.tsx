@@ -1,12 +1,13 @@
 'use client'
 
-import { FilterTag } from '@/components/filter-tag'
+import { useMemo, useState } from 'react'
+
+import { FilterTagContainer } from '@/components/filter-tag-container'
 import { ProductPreview } from '@/components/product-preview'
+import { SearchBar } from '@/components/search-bar'
 import { Product, ProductList } from '@/types'
 import { getProductListCategoriesWithCount } from '@/utils'
-import { ChangeEvent, useMemo, useState } from 'react'
 import products from '../assets/products.json'
-import { SearchBar } from '@/components/search-bar'
 
 export default function Home() {
 	const productList = products as ProductList
@@ -37,28 +38,6 @@ export default function Home() {
 		return { products: filteredByTag, categories }
 	}, [tagFilter, productList, searchFilter])
 
-	const handleSelectTag = (event: ChangeEvent<HTMLInputElement>) => {
-		const value = event.currentTarget.value
-		const isChecked = event.currentTarget.checked
-
-		if (!isChecked) {
-			setTagFilter((prev) => {
-				const tagFilterCopy = [...prev]
-				const tagIndex = prev.findIndex((tag) => tag === value)
-				tagFilterCopy.splice(tagIndex, 1)
-				return tagFilterCopy
-			})
-		}
-
-		if (isChecked) {
-			setTagFilter((prev) => [...prev, value])
-		}
-	}
-
-	const resetTagFilters = () => {
-		setTagFilter([])
-	}
-
 	return (
 		<div className="p-4 md:p-6 flex flex-col gap-6">
 			<h1 className="uppercase text-2xl font-bold text-blue-900">
@@ -66,24 +45,11 @@ export default function Home() {
 			</h1>
 			<SearchBar initialValue={searchFilter} setSearchValue={setSearchFilter} />
 			<div className="w-full min-h-screen grid md:grid-cols-[200px_auto] gap-6">
-				<div className="w-full flex flex-col gap-6">
-					<p className="text-2xl">Filtros</p>
-					<div className="flex flex-col gap-4 grid-col">
-						{Object.keys(filteredProducts.categories).map((category) => (
-							<FilterTag
-								key={category}
-								category={category}
-								count={filteredProducts.categories[category]}
-								onChange={handleSelectTag}
-							/>
-						))}
-					</div>
-					{tagFilter.length > 0 && (
-						<button onClick={resetTagFilters} className="w-max">
-							X Limpiar filtros
-						</button>
-					)}
-				</div>
+				<FilterTagContainer
+					categories={filteredProducts.categories}
+					setTagFilter={setTagFilter}
+					tagFilter={tagFilter}
+				/>
 				<div className="w-full flex flex-col gap-6">
 					<p className="text-2xl">
 						{filteredProducts.products.length}{' '}
